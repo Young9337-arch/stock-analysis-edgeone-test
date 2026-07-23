@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module'
 const require=createRequire(import.meta.url)
-const { route }=require('../../shared/server/core/router')
+const { route }=require('../shared/server/server/core/router')
 
 // Official Makers Node.js handler shape: export default function(context).
 export default async function onRequest(context){
