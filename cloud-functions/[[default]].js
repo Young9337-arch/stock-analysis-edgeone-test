@@ -1,6 +1,7 @@
-import { createRequire } from 'node:module'
-const require=createRequire(import.meta.url)
-const { route }=require('./shared/server/server/core/router')
+// Keep this as a static import. EdgeOne bundles the function entry into one
+// module, so runtime createRequire-relative paths are not preserved.
+import routerModule from './shared/server/server/core/router.js'
+const { route } = routerModule
 
 // Root catch-all keeps /health, /ready and /api/* on the same Node handler.
 export default async function onRequest(context){
