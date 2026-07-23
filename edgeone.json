@@ -1,7 +1,4 @@
 {
   "name": "stock-analysis-edgeone-test",
-  "nodeVersion": "22.21.1",
-  "installCommand": "npm --prefix cloud-functions install",
-  "buildCommand": "npm --prefix cloud-functions run bundle && mkdir -p .edgeone/edge-functions && cp cloud-functions/[[default]].js .edgeone/edge-functions/index.js",
-  "outputDirectory": ".edgeone"
+  "nodeVersion": "22.21.1"
 }
