@@ -1,0 +1,6 @@
+const iconv=require('iconv-lite')
+const SOURCE_ENCODINGS={tencentQuote:['gb18030','gbk','utf8'],tencentMinute:['utf8','gb18030'],domesticIndices:['gb18030','utf8'],globalIndices:['utf8','gb18030'],disclosures:['utf8','gb18030'],news:['utf8','gb18030'],eastmoney:['utf8','gb18030']}
+const charset=v=>String(v||'').match(/charset\s*=\s*["']?([^\s;"']+)/i)?.[1]?.toLowerCase()
+const jsonp=v=>String(v).trim().replace(/^[\w$]+\s*\(/,'').replace(/\)\s*;?$/,'')
+function decodeUpstreamResponse({buffer,contentType,source,preferredEncodings}){const preferred=preferredEncodings||SOURCE_ENCODINGS[source]||['utf8','gb18030','gbk'];const declared=charset(contentType);const list=[declared,...preferred].filter((v,i,a)=>v&&a.indexOf(v)===i);let best='';for(const enc of list){if(!iconv.encodingExists(enc))continue;const text=iconv.decode(buffer,enc);if(!best||text.split('�').length<best.split('�').length)best=text;if(!text.includes('�')){best=text;break}}return {text:best.replace(/^\uFEFF/,''),encoding:list.find(enc=>iconv.encodingExists(enc)&&iconv.decode(buffer,enc)===best)||'utf8',isJsonp:/^[\w$]+\s*\(/.test(best.trim()),isHtml:/<\s*html|<!doctype/i.test(best)}}
+module.exports={decodeUpstreamResponse,SOURCE_ENCODINGS,jsonp}
